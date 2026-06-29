@@ -10,7 +10,7 @@ namespace AutomationExercise.Base
         [SetUp]
         public void Setup()
         {
-            ChromeOptions options = new ChromeOptions();
+            ChromeOptions options = new();
 
             options.AddArgument("--disable-popup-blocking");
             options.AddArgument("--disable-notifications");

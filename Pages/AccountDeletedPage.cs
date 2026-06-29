@@ -3,16 +3,11 @@ using OpenQA.Selenium;
 
 namespace AutomationExercise.Pages
 {
-    public class AccountDeletedPage
+    public class AccountDeletedPage(IWebDriver driver)
     {
-        private readonly WaitHelper waitHelper;
+        private readonly WaitHelper waitHelper = new(driver);
 
-        public AccountDeletedPage(IWebDriver driver)
-        {
-            waitHelper = new WaitHelper(driver);
-        }
-
-        private By AccountDeletedTitle => By.XPath("//b[text()='Account Deleted!']");
+        private static By AccountDeletedTitle => By.XPath("//b[text()='Account Deleted!']");
 
         public bool IsAccountDeletedVisible()
         {

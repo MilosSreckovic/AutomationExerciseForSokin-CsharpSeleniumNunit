@@ -3,19 +3,14 @@ using OpenQA.Selenium;
 
 namespace AutomationExercise.Pages
 {
-    public class LoginPage
+    public class LoginPage(IWebDriver driver)
     {
-        private readonly WaitHelper waitHelper;
+        private readonly WaitHelper waitHelper = new(driver);
 
-        public LoginPage(IWebDriver driver)
-        {
-            waitHelper = new WaitHelper(driver);
-        }
-
-        private By LoginToYourAccountTitle => By.XPath("//h2[text()='Login to your account']");
-        private By EmailInput => By.XPath("//input[@data-qa='login-email']");
-        private By PasswordInput => By.XPath("//input[@data-qa='login-password']");
-        private By LoginButton => By.XPath("//button[@data-qa='login-button']");
+        private static By LoginToYourAccountTitle => By.XPath("//h2[text()='Login to your account']");
+        private static By EmailInput => By.XPath("//input[@data-qa='login-email']");
+        private static By PasswordInput => By.XPath("//input[@data-qa='login-password']");
+        private static By LoginButton => By.XPath("//button[@data-qa='login-button']");
 
         public bool IsLoginToYourAccountVisible()
         {

@@ -3,26 +3,20 @@ using OpenQA.Selenium;
 
 namespace AutomationExercise.Pages
 {
-    public class ProductsPage
+    public class ProductsPage(IWebDriver driver)
     {
-        private readonly IWebDriver driver;
-        private readonly WaitHelper waitHelper;
+        private readonly IWebDriver driver = driver;
+        private readonly WaitHelper waitHelper = new(driver);
 
-        public ProductsPage(IWebDriver driver)
-        {
-            this.driver = driver;
-            waitHelper = new WaitHelper(driver);
-        }
-
-        private By BrandsTitle => By.XPath("//h2[text()='Brands']");
-        private By PoloBrandLink => By.XPath("//a[@href='/brand_products/Polo']");
-        private By HmBrandLink => By.XPath("//a[@href='/brand_products/H&M']");
-        private By BrandProductsTitle => By.XPath("//h2[contains(text(),'Brand -')]");
-        private By SearchInput => By.Id("search_product");
-        private By SearchButton => By.Id("submit_search");
-        private By SearchedProductsTitle => By.XPath("//h2[text()='Searched Products']");
-        private By FirstProductAddToCartButton => By.XPath("(//a[contains(@class,'add-to-cart') and contains(text(),'Add to cart')])[1]");
-        private By ViewCartButton => By.XPath("//u[text()='View Cart']");
+        private static By BrandsTitle => By.XPath("//h2[text()='Brands']");
+        private static By PoloBrandLink => By.XPath("//a[@href='/brand_products/Polo']");
+        private static By HmBrandLink => By.XPath("//a[@href='/brand_products/H&M']");
+        private static By BrandProductsTitle => By.XPath("//h2[contains(text(),'Brand -')]");
+        private static By SearchInput => By.Id("search_product");
+        private static By SearchButton => By.Id("submit_search");
+        private static By SearchedProductsTitle => By.XPath("//h2[text()='Searched Products']");
+        private static By FirstProductAddToCartButton => By.XPath("(//a[contains(@class,'add-to-cart') and contains(text(),'Add to cart')])[1]");
+        private static By ViewCartButton => By.XPath("//u[text()='View Cart']");
 
         public bool AreBrandsVisible()
         {

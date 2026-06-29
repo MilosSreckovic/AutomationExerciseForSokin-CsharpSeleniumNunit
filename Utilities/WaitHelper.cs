@@ -3,16 +3,10 @@ using OpenQA.Selenium.Support.UI;
 
 namespace AutomationExercise.Utilities
 {
-    public class WaitHelper
+    public class WaitHelper(IWebDriver driver)
     {
-        private readonly IWebDriver driver;
-        private readonly WebDriverWait wait;
-
-        public WaitHelper(IWebDriver driver)
-        {
-            this.driver = driver;
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-        }
+        private readonly IWebDriver driver = driver;
+        private readonly WebDriverWait wait = new(driver, TimeSpan.FromSeconds(10));
 
         public IWebElement WaitForElement(By locator)
         {
@@ -28,9 +22,5 @@ namespace AutomationExercise.Utilities
             WaitForElement(locator).Click();
         }
 
-        public void WaitForUrlContains(string text)
-        {
-            wait.Until(d => d.Url.Contains(text));
-        }
     }
 }

@@ -3,17 +3,11 @@ using OpenQA.Selenium;
 
 namespace AutomationExercise.Pages
 {
-    public class CartPage
+    public class CartPage(IWebDriver driver)
     {
-        private readonly WaitHelper waitHelper;
-        private By SignupLoginButton => By.XPath("//a[contains(text(),'Signup / Login')]");
-
-        public CartPage(IWebDriver driver)
-        {
-            waitHelper = new WaitHelper(driver);
-        }
-
-        private By CartProduct => By.XPath("//tr[contains(@id,'product')]");
+        private readonly WaitHelper waitHelper = new(driver);
+        private static By SignupLoginButton => By.XPath("//a[contains(text(),'Signup / Login')]");
+        private static By CartProduct => By.XPath("//tr[contains(@id,'product')]");
 
         public bool IsProductVisibleInCart()
         {

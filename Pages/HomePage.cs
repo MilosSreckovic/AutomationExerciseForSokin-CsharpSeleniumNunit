@@ -3,24 +3,17 @@ using OpenQA.Selenium;
 
 namespace AutomationExercise.Pages
 {
-    public class HomePage
+    public class HomePage(IWebDriver driver)
     {
-        private readonly IWebDriver driver;
-        private readonly WaitHelper waitHelper;
+        private readonly IWebDriver driver = driver;
+        private readonly WaitHelper waitHelper = new(driver);
 
-        public HomePage(IWebDriver driver)
-        {
-            this.driver = driver;
-            waitHelper = new WaitHelper(driver);
-        }
-
-        private By SignupLoginButton => By.XPath("//a[contains(text(),'Signup / Login')]");
-        private By HomePageSlider => By.Id("slider");
-        private By LoggedInAsUserText => By.XPath("//a[contains(text(),'Logged in as')]");
-        private By DeleteAccountButton => By.XPath("//a[contains(text(),'Delete Account')]");
-
-        private By ProductsButton => By.XPath("//a[contains(text(),'Products')]");
-        private By CartButton => By.XPath("//a[contains(text(),'Cart')]");
+        private static By SignupLoginButton => By.XPath("//a[contains(text(),'Signup / Login')]");
+        private static By HomePageSlider => By.Id("slider");
+        private static By LoggedInAsUserText => By.XPath("//a[contains(text(),'Logged in as')]");
+        private static By DeleteAccountButton => By.XPath("//a[contains(text(),'Delete Account')]");
+        private static By ProductsButton => By.XPath("//a[contains(text(),'Products')]");
+        private static By CartButton => By.XPath("//a[contains(text(),'Cart')]");
 
         public void OpenHomePage()
         {

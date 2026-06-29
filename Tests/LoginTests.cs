@@ -1,7 +1,6 @@
 ﻿using AutomationExercise.Base;
 using AutomationExercise.Pages;
 using AutomationExercise.Utilities;
-using NUnit.Framework;
 
 namespace AutomationExercise.Tests
 {
@@ -26,9 +25,9 @@ namespace AutomationExercise.Tests
         [Test]
         public void LoginUserWithCorrectEmailAndPassword()
         {
-            HomePage homePage = new HomePage(driver!);
-            LoginPage loginPage = new LoginPage(driver!);
-            AccountDeletedPage accountDeletedPage = new AccountDeletedPage(driver!);
+            HomePage homePage = new(driver!);
+            LoginPage loginPage = new(driver!);
+            AccountDeletedPage accountDeletedPage = new(driver!);
 
             homePage.OpenHomePage();
             Assert.That(homePage.IsHomePageVisible(), Is.True, "Home page is not visible.");
