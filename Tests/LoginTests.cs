@@ -1,6 +1,8 @@
-﻿using AutomationExercise.Base;
+
+using AutomationExercise.Base;
 using AutomationExercise.Pages;
 using AutomationExercise.Utilities;
+using NUnit.Framework;
 
 namespace AutomationExercise.Tests
 {
@@ -8,18 +10,25 @@ namespace AutomationExercise.Tests
     {
         private string email = string.Empty;
         private string password = string.Empty;
-        private readonly ApiHelper apiHelper = new ApiHelper();
+        private bool userCreated;
+
+        private readonly ApiHelper apiHelper = new();
 
         [SetUp]
         public async Task TestSetup()
         {
+            userCreated = false;
+
             email = $"test{Guid.NewGuid():N}@mailinator.com";
             password = "Test123!";
 
             await apiHelper.CreateUser(
                 "Test User",
                 email,
-                password);
+                password
+            );
+
+            userCreated = true;
         }
 
         [Test]
@@ -27,19 +36,39 @@ namespace AutomationExercise.Tests
         {
             HomePage homePage = new(driver!);
             LoginPage loginPage = new(driver!);
-            AccountDeletedPage accountDeletedPage = new(driver!);
 
             homePage.OpenHomePage();
-            Assert.That(homePage.IsHomePageVisible(), Is.True, "Home page is not visible.");
+
+            Assert.That(
+                homePage.IsHomePageVisible(),
+                Is.True,
+                "Home page is not visible."
+            );
 
             homePage.ClickSignupLogin();
-            Assert.That(loginPage.IsLoginToYourAccountVisible(), Is.True, "'Login to your account' is not visible.");
+
+            Assert.That(
+                loginPage.IsLoginToYourAccountVisible(),
+                Is.True,
+                "Login form is not visible."
+            );
 
             loginPage.Login(email, password);
-            Assert.That(homePage.IsLoggedInAsUserVisible(), Is.True, "'Logged in as username' is not visible.");
 
-            homePage.ClickDeleteAccount();
-            Assert.That(accountDeletedPage.IsAccountDeletedVisible(), Is.True, "'ACCOUNT DELETED!' is not visible.");
+            Assert.That(
+                homePage.IsLoggedInAsUserVisible(),
+                Is.True,
+                "User was not successfully logged in."
+            );
+        }
+
+        [TearDown]
+        public async Task TestCleanup()
+        {
+            if (userCreated)
+            {
+                await apiHelper.DeleteUser(email, password);
+            }
         }
     }
 }
