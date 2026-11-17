@@ -1,4 +1,5 @@
-﻿using AutomationExercise.Utilities;
+
+using AutomationExercise.Utilities;
 using OpenQA.Selenium;
 
 namespace AutomationExercise.Pages
@@ -7,21 +8,47 @@ namespace AutomationExercise.Pages
     {
         private readonly WaitHelper waitHelper = new(driver);
 
-        private static By LoginToYourAccountTitle => By.XPath("//h2[text()='Login to your account']");
-        private static By EmailInput => By.XPath("//input[@data-qa='login-email']");
-        private static By PasswordInput => By.XPath("//input[@data-qa='login-password']");
-        private static By LoginButton => By.XPath("//button[@data-qa='login-button']");
+        private static readonly By LoginTitle =
+            By.XPath("//h2[normalize-space()='Login to your account']");
+
+        private static readonly By EmailInput =
+            By.CssSelector("[data-qa='login-email']");
+
+        private static readonly By PasswordInput =
+            By.CssSelector("[data-qa='login-password']");
+
+        private static readonly By LoginButton =
+            By.CssSelector("[data-qa='login-button']");
 
         public bool IsLoginToYourAccountVisible()
         {
-            return waitHelper.WaitForElement(LoginToYourAccountTitle).Displayed;
+            return waitHelper.WaitForElement(LoginTitle).Displayed;
+        }
+
+        public void EnterEmail(string email)
+        {
+            IWebElement emailField = waitHelper.WaitForElement(EmailInput);
+            emailField.Clear();
+            emailField.SendKeys(email);
+        }
+
+        public void EnterPassword(string password)
+        {
+            IWebElement passwordField = waitHelper.WaitForElement(PasswordInput);
+            passwordField.Clear();
+            passwordField.SendKeys(password);
+        }
+
+        public void ClickLogin()
+        {
+            waitHelper.ClickElement(LoginButton);
         }
 
         public void Login(string email, string password)
         {
-            waitHelper.WaitForElement(EmailInput).SendKeys(email);
-            waitHelper.WaitForElement(PasswordInput).SendKeys(password);
-            waitHelper.ClickElement(LoginButton);
+            EnterEmail(email);
+            EnterPassword(password);
+            ClickLogin();
         }
     }
 }
