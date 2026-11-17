@@ -1,4 +1,5 @@
-﻿using AutomationExercise.Utilities;
+﻿
+using AutomationExercise.Utilities;
 using OpenQA.Selenium;
 
 namespace AutomationExercise.Pages
@@ -8,15 +9,35 @@ namespace AutomationExercise.Pages
         private readonly IWebDriver driver = driver;
         private readonly WaitHelper waitHelper = new(driver);
 
-        private static By BrandsTitle => By.XPath("//h2[text()='Brands']");
-        private static By PoloBrandLink => By.XPath("//a[@href='/brand_products/Polo']");
-        private static By HmBrandLink => By.XPath("//a[@href='/brand_products/H&M']");
-        private static By BrandProductsTitle => By.XPath("//h2[contains(text(),'Brand -')]");
-        private static By SearchInput => By.Id("search_product");
-        private static By SearchButton => By.Id("submit_search");
-        private static By SearchedProductsTitle => By.XPath("//h2[text()='Searched Products']");
-        private static By FirstProductAddToCartButton => By.XPath("(//a[contains(@class,'add-to-cart') and contains(text(),'Add to cart')])[1]");
-        private static By ViewCartButton => By.XPath("//u[text()='View Cart']");
+        private static By BrandsTitle =>
+            By.XPath("//h2[text()='Brands']");
+
+        private static By PoloBrandLink =>
+            By.XPath("//a[@href='/brand_products/Polo']");
+
+        private static By HmBrandLink =>
+            By.XPath("//a[@href='/brand_products/H&M']");
+
+        private static By BrandProductsTitle =>
+            By.XPath("//h2[contains(text(),'Brand -')]");
+
+        private static By SearchInput =>
+            By.Id("search_product");
+
+        private static By SearchButton =>
+            By.Id("submit_search");
+
+        private static By SearchedProductsTitle =>
+            By.XPath("//h2[text()='Searched Products']");
+
+        private static By FirstProductAddToCartButton =>
+            By.XPath("(//a[contains(@class,'add-to-cart') and contains(text(),'Add to cart')])[1]");
+
+        private static By AddedToCartModal =>
+            By.Id("cartModal");
+
+        private static By ViewCartButton =>
+            By.CssSelector("#cartModal a[href='/view_cart']");
 
         public bool AreBrandsVisible()
         {
@@ -61,6 +82,7 @@ namespace AutomationExercise.Pages
 
         public void ClickViewCart()
         {
+            waitHelper.WaitForElement(AddedToCartModal);
             waitHelper.ClickElement(ViewCartButton);
         }
     }

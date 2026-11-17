@@ -55,9 +55,7 @@ namespace AutomationExercise.Utilities
                     IWebElement element = d.FindElement(locator);
 
                     if (!element.Displayed || !element.Enabled)
-                    {
                         return false;
-                    }
 
                     element.Click();
                     return true;
