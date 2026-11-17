@@ -19,7 +19,7 @@ namespace AutomationExercise.Pages
             By.XPath("//a[@href='/brand_products/H&M']");
 
         private static By BrandProductsTitle =>
-            By.XPath("//h2[contains(text(),'Brand -')]");
+            By.XPath("//h2[contains(normalize-space(.), 'Brand -')]");
 
         private static By SearchInput =>
             By.Id("search_product");

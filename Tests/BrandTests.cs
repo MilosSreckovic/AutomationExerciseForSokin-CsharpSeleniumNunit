@@ -18,6 +18,8 @@ namespace AutomationExercise.Tests
             Assert.That(productsPage.AreBrandsVisible(), Is.True, "Brands section is not visible.");
 
             productsPage.ClickPoloBrand();
+            TestContext.Out.WriteLine($"URL after Polo click: {driver!.Url}");
+            TestContext.Out.WriteLine($"Page title: {driver.Title}");
             Assert.That(productsPage.IsBrandProductsTitleVisible(), Is.True, "Brand products title is not visible.");
             Assert.That(productsPage.IsCurrentUrlForBrand("Polo"), Is.True, "Polo brand page is not opened.");
 
