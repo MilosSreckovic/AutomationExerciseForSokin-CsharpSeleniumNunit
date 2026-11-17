@@ -1,15 +1,20 @@
-﻿namespace AutomationExercise.Utilities
+
+using System.Net.Http;
+using System.Text.Json;
+
+namespace AutomationExercise.Utilities
 {
     public class ApiHelper
     {
-        private readonly HttpClient client;
-
-        public ApiHelper()
+        private static readonly HttpClient client = new()
         {
-            client = new HttpClient();
-        }
+            BaseAddress = new Uri("https://automationexercise.com/api/")
+        };
 
-        public async Task CreateUser(string name, string email, string password)
+        public async Task CreateUser(
+            string name,
+            string email,
+            string password)
         {
             var formData = new Dictionary<string, string>
             {
@@ -32,9 +37,79 @@
                 { "mobile_number", "1234567890" }
             };
 
-            var content = new FormUrlEncodedContent(formData);
+            using var content = new FormUrlEncodedContent(formData);
 
-            await client.PostAsync("https://automationexercise.com/api/createAccount", content);
+            using var response = await client.PostAsync(
+                "createAccount",
+                content
+            );
+
+            await ValidateResponse(
+                response,
+                201,
+                "User created!"
+            );
+        }
+
+        public async Task DeleteUser(
+            string email,
+            string password)
+        {
+            var formData = new Dictionary<string, string>
+            {
+                { "email", email },
+                { "password", password }
+            };
+
+            using var content = new FormUrlEncodedContent(formData);
+
+            using var request = new HttpRequestMessage(
+                HttpMethod.Delete,
+                "deleteAccount"
+            )
+            {
+                Content = content
+            };
+
+            using var response = await client.SendAsync(request);
+
+            await ValidateResponse(
+                response,
+                200,
+                "Account deleted!"
+            );
+        }
+
+        private static async Task ValidateResponse(
+            HttpResponseMessage response,
+            int expectedCode,
+            string expectedMessage)
+        {
+            response.EnsureSuccessStatusCode();
+
+            string json = await response.Content.ReadAsStringAsync();
+
+            using JsonDocument document = JsonDocument.Parse(json);
+
+            JsonElement root = document.RootElement;
+
+            int actualCode = root
+                .GetProperty("responseCode")
+                .GetInt32();
+
+            string? actualMessage = root
+                .GetProperty("message")
+                .GetString();
+
+            if (actualCode != expectedCode ||
+                actualMessage != expectedMessage)
+            {
+                throw new InvalidOperationException(
+                    $"Unexpected API response. " +
+                    $"Expected: {expectedCode} - {expectedMessage}. " +
+                    $"Actual: {actualCode} - {actualMessage}"
+                );
+            }
         }
     }
 }
