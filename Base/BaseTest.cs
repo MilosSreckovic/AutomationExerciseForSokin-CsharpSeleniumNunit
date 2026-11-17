@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+
+using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
 namespace AutomationExercise.Base
@@ -15,18 +17,36 @@ namespace AutomationExercise.Base
             options.AddArgument("--disable-popup-blocking");
             options.AddArgument("--disable-notifications");
             options.AddArgument("--disable-extensions");
-            options.AddArgument("--disable-infobars");
-            options.AddArgument("--host-resolver-rules=MAP googleads.g.doubleclick.net 127.0.0.1, MAP pagead2.googlesyndication.com 127.0.0.1");
+
+            // Enable headless execution in CI
+            if (Environment.GetEnvironmentVariable("CI") == "true")
+            {
+                options.AddArgument("--headless=new");
+                options.AddArgument("--window-size=1920,1080");
+                options.AddArgument("--no-sandbox");
+                options.AddArgument("--disable-dev-shm-usage");
+            }
 
             driver = new ChromeDriver(options);
-            driver.Manage().Window.Maximize();
+
+            if (Environment.GetEnvironmentVariable("CI") != "true")
+            {
+                driver.Manage().Window.Maximize();
+            }
         }
 
         [TearDown]
         public void TearDown()
         {
-            driver?.Quit();
-            driver?.Dispose();
+            try
+            {
+                driver?.Quit();
+            }
+            finally
+            {
+                driver?.Dispose();
+                driver = null;
+            }
         }
     }
 }
